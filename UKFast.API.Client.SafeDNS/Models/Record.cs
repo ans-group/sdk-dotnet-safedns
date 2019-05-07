@@ -1,4 +1,5 @@
 ﻿using System;
+using UKFast.API.Client.Json;
 
 namespace UKFast.API.Client.SafeDNS.Models
 {
@@ -23,6 +24,7 @@ namespace UKFast.API.Client.SafeDNS.Models
         public int Priority { get; set; }
 
         [Newtonsoft.Json.JsonProperty("updated_at")]
+        [Newtonsoft.Json.JsonConverter(typeof(DateTimeConverter))]
         public DateTime UpdatedAt { get; set; }
 
         [Newtonsoft.Json.JsonProperty("ttl")]

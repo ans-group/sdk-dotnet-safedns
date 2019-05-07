@@ -1,4 +1,5 @@
 ﻿using System;
+using UKFast.API.Client.Json;
 
 namespace UKFast.API.Client.SafeDNS.Models
 {
@@ -14,6 +15,7 @@ namespace UKFast.API.Client.SafeDNS.Models
         public string Notes { get; set; }
 
         [Newtonsoft.Json.JsonProperty("created_at")]
+        [Newtonsoft.Json.JsonConverter(typeof(DateTimeConverter))]
         public DateTime CreatedAt { get; set; }
 
         [Newtonsoft.Json.JsonProperty("ip")]

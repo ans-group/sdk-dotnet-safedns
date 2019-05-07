@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using UKFast.API.Client;
+using UKFast.API.Client.Json;
 using UKFast.API.Client.SafeDNS.Operations;
 
 namespace UKFast.API.Client.SafeDNS.Models
@@ -19,6 +20,7 @@ namespace UKFast.API.Client.SafeDNS.Models
         public bool? Default { get; set; }
 
         [Newtonsoft.Json.JsonProperty("created_at")]
+        [Newtonsoft.Json.JsonConverter(typeof(DateConverter))]
         public DateTime CreatedAt { get; set; }
     }
 }
