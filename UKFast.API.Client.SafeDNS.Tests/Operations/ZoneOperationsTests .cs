@@ -12,7 +12,7 @@ using UKFast.API.Client.SafeDNS.Operations;
 namespace UKFast.API.Client.SafeDNS.Tests.Operations
 {
     [TestClass]
-    public class ZoneOperationsBaseTests
+    public class ZoneOperationsTests
     {
         [TestMethod]
         public async Task CreateZoneAsync_ExpectedResult()
@@ -28,7 +28,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
                 Name = "example.com"
             });
 
-            ZoneOperations ops = new ZoneOperations(client);
+            var ops = new ZoneOperations<Zone>(client);
             string name = await ops.CreateZoneAsync(req);
 
             Assert.AreEqual("example.com", name);
@@ -38,7 +38,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
         public async Task GetZonesAsync_ExpectedResult()
         {
             IUKFastSafeDNSClient client = Substitute.For<IUKFastSafeDNSClient>();
-            ZoneOperations ops = new ZoneOperations(client);
+            var ops = new ZoneOperations<Zone>(client);
 
             client.GetAllAsync(Arg.Any<UKFastClient.GetPaginatedAsyncFunc<Zone>>(), null).Returns(Task.Run<IList<Zone>>(() =>
              {
@@ -73,7 +73,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
                 });
             }));
 
-            ZoneOperations ops = new ZoneOperations(client);
+            var ops = new ZoneOperations<Zone>(client);
             var paginated = await ops.GetZonesPaginatedAsync();
 
             Assert.AreEqual(2, paginated.Items.Count);
@@ -88,7 +88,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
                 Name = "example.com"
             });
 
-            ZoneOperations ops = new ZoneOperations(client);
+            var ops = new ZoneOperations<Zone>(client);
             var zone = await ops.GetZoneAsync("example.com");
 
             Assert.AreEqual("example.com", zone.Name);
@@ -97,7 +97,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
         [TestMethod]
         public async Task GetZoneAsync_InvalidZoneName_ThrowsUKFastClientValidationException()
         {
-            ZoneOperations ops = new ZoneOperations(null);
+            var ops = new ZoneOperations<Zone>(null);
             await Assert.ThrowsExceptionAsync<UKFastClientValidationException>(() => ops.GetZoneAsync(""));
         }
 
@@ -112,7 +112,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
             IUKFastSafeDNSClient client = Substitute.For<IUKFastSafeDNSClient>();
             await client.PatchAsync("/safedns/v1/zones/example.com", req);
 
-            ZoneOperations ops = new ZoneOperations(client);
+            var ops = new ZoneOperations<Zone>(client);
             await ops.UpdateZoneAsync("example.com", req);
 
             await client.Received().PatchAsync("/safedns/v1/zones/example.com", req);
@@ -121,7 +121,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
         [TestMethod]
         public async Task UpdateZoneAsync_InvalidZoneName_ThrowsUKFastClientValidationException()
         {
-            ZoneOperations ops = new ZoneOperations(null);
+            var ops = new ZoneOperations<Zone>(null);
             await Assert.ThrowsExceptionAsync<UKFastClientValidationException>(() => ops.UpdateZoneAsync("", null));
         }
 
@@ -131,7 +131,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
             IUKFastSafeDNSClient client = Substitute.For<IUKFastSafeDNSClient>();
             await client.DeleteAsync("/safedns/v1/zones/example.com");
 
-            ZoneOperations ops = new ZoneOperations(client);
+            var ops = new ZoneOperations<Zone>(client);
             await ops.DeleteZoneAsync("example.com");
 
             await client.Received().DeleteAsync("/safedns/v1/zones/example.com");
@@ -140,7 +140,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
         [TestMethod]
         public async Task DeleteZoneAsync_InvalidZoneName_ThrowsUKFastClientValidationException()
         {
-            ZoneOperations ops = new ZoneOperations(null);
+            var ops = new ZoneOperations<Zone>(null);
             await Assert.ThrowsExceptionAsync<UKFastClientValidationException>(() => ops.DeleteZoneAsync(""));
         }
     }

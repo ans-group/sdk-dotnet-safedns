@@ -17,27 +17,27 @@ namespace UKFast.API.Client.SafeDNS
 
         public IZoneOperations<Zone> ZoneOperations()
         {
-            return new ZoneOperations(this);
+            return new ZoneOperations<Zone>(this);
         }
 
         public IZoneRecordOperations<Record> ZoneRecordOperations()
         {
-            return new ZoneRecordOperations(this);
+            return new ZoneRecordOperations<Record>(this);
         }
 
         public IZoneNoteOperations<Note> ZoneNoteOperations()
         {
-            return new ZoneNoteOperations(this);
+            return new ZoneNoteOperations<Note>(this);
         }
 
         public ITemplateOperations<Template> TemplateOperations()
         {
-            return new TemplateOperations(this);
+            return new TemplateOperations<Template>(this);
         }
 
         public ITemplateRecordOperations<Record> TemplateRecordOperations()
         {
-            return new TemplateRecordOperations(this);
+            return new TemplateRecordOperations<Record>(this);
         }
     }
 }

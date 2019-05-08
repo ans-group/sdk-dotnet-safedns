@@ -14,7 +14,7 @@ using UKFast.API.Client.SafeDNS.Operations;
 namespace UKFast.API.Client.SafeDNS.Tests.Operations
 {
     [TestClass]
-    public class ZoneRecordOperationsBaseTests
+    public class ZoneRecordOperationsTests
     {
         [TestMethod]
         public async Task CreateZoneRecordAsync_ExpectedResult()
@@ -25,12 +25,12 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
             };
 
             IUKFastSafeDNSClient client = Substitute.For<IUKFastSafeDNSClient>();
-            client.PostAsync<Record>("/safedns/v1/zones/example.com/records", req).Returns(new Record()
+            client.PostAsync<Record>("/safedns/v1/zones/example.com/records", Arg.Is<CreateRecordRequest>(x => x.Name == "test.example.com")).Returns(new Record()
             {
                 ID = 123
             });
 
-            ZoneRecordOperations ops = new ZoneRecordOperations(client);
+            var ops = new ZoneRecordOperations<Record>(client);
             int id = await ops.CreateRecordAsync("example.com", req);
 
             Assert.AreEqual(123, id);
@@ -39,7 +39,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
         [TestMethod]
         public async Task CreateZoneRecordAsync_InvalidZoneID_ThrowsUKFastClientValidationException()
         {
-            ZoneRecordOperations ops = new ZoneRecordOperations(null);
+            var ops = new ZoneRecordOperations<Record>(null);
             await Assert.ThrowsExceptionAsync<UKFastClientValidationException>(() => ops.CreateRecordAsync("", null));
         }
 
@@ -47,7 +47,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
         public async Task GetZoneRecordsAsync_ExpectedResult()
         {
             IUKFastSafeDNSClient client = Substitute.For<IUKFastSafeDNSClient>();
-            ZoneRecordOperations ops = new ZoneRecordOperations(client);
+            var ops = new ZoneRecordOperations<Record>(client);
 
             client.GetAllAsync(Arg.Any<UKFastClient.GetPaginatedAsyncFunc<Record>>(), null).Returns(Task.Run<IList<Record>>(() =>
             {
@@ -82,7 +82,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
                 });
             }));
 
-            ZoneRecordOperations ops = new ZoneRecordOperations(client);
+            var ops = new ZoneRecordOperations<Record>(client);
             var paginated = await ops.GetRecordsPaginatedAsync("example.com");
 
             Assert.AreEqual(2, paginated.Items.Count);
@@ -91,7 +91,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
         [TestMethod]
         public async Task GetZoneRecordsPaginatedAsync_InvalidZoneID_ThrowsUKFastClientValidationException()
         {
-            ZoneRecordOperations ops = new ZoneRecordOperations(null);
+            var ops = new ZoneRecordOperations<Record>(null);
             await Assert.ThrowsExceptionAsync<UKFastClientValidationException>(() => ops.GetRecordsPaginatedAsync(""));
         }
 
@@ -104,7 +104,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
                 ID = 123
             });
 
-            ZoneRecordOperations ops = new ZoneRecordOperations(client);
+            var ops = new ZoneRecordOperations<Record>(client);
             var ZoneRecord = await ops.GetRecordAsync("example.com", 123);
 
             Assert.AreEqual(123, ZoneRecord.ID);
@@ -113,14 +113,14 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
         [TestMethod]
         public async Task GetZoneRecordAsync_InvalidZoneID_ThrowsUKFastClientValidationException()
         {
-            ZoneRecordOperations ops = new ZoneRecordOperations(null);
+            var ops = new ZoneRecordOperations<Record>(null);
             await Assert.ThrowsExceptionAsync<UKFastClientValidationException>(() => ops.GetRecordAsync("", 123));
         }
 
         [TestMethod]
         public async Task GetZoneRecordAsync_InvalidRecordID_ThrowsUKFastClientValidationException()
         {
-            ZoneRecordOperations ops = new ZoneRecordOperations(null);
+            var ops = new ZoneRecordOperations<Record>(null);
             await Assert.ThrowsExceptionAsync<UKFastClientValidationException>(() => ops.GetRecordAsync("example.com", 0));
         }
 
@@ -135,7 +135,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
             IUKFastSafeDNSClient client = Substitute.For<IUKFastSafeDNSClient>();
             await client.PatchAsync("/safedns/v1/zones/example.com/records/123", req);
 
-            ZoneRecordOperations ops = new ZoneRecordOperations(client);
+            var ops = new ZoneRecordOperations<Record>(client);
             await ops.UpdateRecordAsync("example.com", 123, req);
 
             await client.Received().PatchAsync("/safedns/v1/zones/example.com/records/123", req);
@@ -144,14 +144,14 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
         [TestMethod]
         public async Task UpdateZoneRecordAsync_InvalidZoneID_ThrowsUKFastClientValidationException()
         {
-            ZoneRecordOperations ops = new ZoneRecordOperations(null);
+            var ops = new ZoneRecordOperations<Record>(null);
             await Assert.ThrowsExceptionAsync<UKFastClientValidationException>(() => ops.UpdateRecordAsync("", 123, null));
         }
 
         [TestMethod]
         public async Task UpdateZoneRecordAsync_InvalidRecordID_ThrowsUKFastClientValidationException()
         {
-            ZoneRecordOperations ops = new ZoneRecordOperations(null);
+            var ops = new ZoneRecordOperations<Record>(null);
             await Assert.ThrowsExceptionAsync<UKFastClientValidationException>(() => ops.UpdateRecordAsync("example.com", 0, null));
         }
 
@@ -161,7 +161,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
             IUKFastSafeDNSClient client = Substitute.For<IUKFastSafeDNSClient>();
             await client.DeleteAsync("/safedns/v1/zones/example.com/records/123");
 
-            ZoneRecordOperations ops = new ZoneRecordOperations(client);
+            var ops = new ZoneRecordOperations<Record>(client);
             await ops.DeleteRecordAsync("example.com", 123);
 
             await client.Received().DeleteAsync("/safedns/v1/zones/example.com/records/123");
@@ -170,14 +170,14 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
         [TestMethod]
         public async Task DeleteZoneRecordAsync_InvalidZoneID_ThrowsUKFastClientValidationException()
         {
-            ZoneRecordOperations ops = new ZoneRecordOperations(null);
+            var ops = new ZoneRecordOperations<Record>(null);
             await Assert.ThrowsExceptionAsync<UKFastClientValidationException>(() => ops.DeleteRecordAsync("", 123));
         }
 
         [TestMethod]
         public async Task DeleteZoneRecordAsync_InvalidRecordID_ThrowsUKFastClientValidationException()
         {
-            ZoneRecordOperations ops = new ZoneRecordOperations(null);
+            var ops = new ZoneRecordOperations<Record>(null);
             await Assert.ThrowsExceptionAsync<UKFastClientValidationException>(() => ops.DeleteRecordAsync("example.com", 0));
         }
     }

@@ -14,7 +14,7 @@ using UKFast.API.Client.SafeDNS.Operations;
 namespace UKFast.API.Client.SafeDNS.Tests.Operations
 {
     [TestClass]
-    public class TemplateRecordOperationsBaseTests
+    public class TemplateRecordOperationsTests
     {
         [TestMethod]
         public async Task CreateTemplateRecordAsync_ExpectedResult()
@@ -30,7 +30,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
                 ID = 123
             });
 
-            TemplateRecordOperations ops = new TemplateRecordOperations(client);
+            var ops = new TemplateRecordOperations<Record>(client);
             int id = await ops.CreateRecordAsync(123, req);
 
             Assert.AreEqual(123, id);
@@ -39,7 +39,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
         [TestMethod]
         public async Task CreateTemplateRecordAsync_InvalidTemplateID_ThrowsUKFastClientValidationException()
         {
-            TemplateRecordOperations ops = new TemplateRecordOperations(null);
+            var ops = new TemplateRecordOperations<Record>(null);
             await Assert.ThrowsExceptionAsync<UKFastClientValidationException>(() => ops.CreateRecordAsync(0, null));
         }
 
@@ -47,7 +47,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
         public async Task GetTemplateRecordsAsync_ExpectedResult()
         {
             IUKFastSafeDNSClient client = Substitute.For<IUKFastSafeDNSClient>();
-            TemplateRecordOperations ops = new TemplateRecordOperations(client);
+            var ops = new TemplateRecordOperations<Record>(client);
 
             client.GetAllAsync(Arg.Any<UKFastClient.GetPaginatedAsyncFunc<Record>>(), null).Returns(Task.Run<IList<Record>>(() =>
             {
@@ -82,7 +82,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
                 });
             }));
 
-            TemplateRecordOperations ops = new TemplateRecordOperations(client);
+            var ops = new TemplateRecordOperations<Record>(client);
             var paginated = await ops.GetRecordsPaginatedAsync(123);
 
             Assert.AreEqual(2, paginated.Items.Count);
@@ -91,7 +91,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
         [TestMethod]
         public async Task GetTemplateRecordsPaginatedAsync_InvalidTemplateID_ThrowsUKFastClientValidationException()
         {
-            TemplateRecordOperations ops = new TemplateRecordOperations(null);
+            var ops = new TemplateRecordOperations<Record>(null);
             await Assert.ThrowsExceptionAsync<UKFastClientValidationException>(() => ops.GetRecordsPaginatedAsync(0));
         }
 
@@ -104,7 +104,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
                 ID = 123
             });
 
-            TemplateRecordOperations ops = new TemplateRecordOperations(client);
+            var ops = new TemplateRecordOperations<Record>(client);
             var TemplateRecord = await ops.GetRecordAsync(123, 456);
 
             Assert.AreEqual(123, TemplateRecord.ID);
@@ -113,14 +113,14 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
         [TestMethod]
         public async Task GetTemplateRecordAsync_InvalidTemplateID_ThrowsUKFastClientValidationException()
         {
-            TemplateRecordOperations ops = new TemplateRecordOperations(null);
+            var ops = new TemplateRecordOperations<Record>(null);
             await Assert.ThrowsExceptionAsync<UKFastClientValidationException>(() => ops.GetRecordAsync(0, 456));
         }
 
         [TestMethod]
         public async Task GetTemplateRecordAsync_InvalidRecordID_ThrowsUKFastClientValidationException()
         {
-            TemplateRecordOperations ops = new TemplateRecordOperations(null);
+            var ops = new TemplateRecordOperations<Record>(null);
             await Assert.ThrowsExceptionAsync<UKFastClientValidationException>(() => ops.GetRecordAsync(123, 0));
         }
 
@@ -135,7 +135,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
             IUKFastSafeDNSClient client = Substitute.For<IUKFastSafeDNSClient>();
             await client.PatchAsync("/safedns/v1/templates/123/records/456", req);
 
-            TemplateRecordOperations ops = new TemplateRecordOperations(client);
+            var ops = new TemplateRecordOperations<Record>(client);
             await ops.UpdateRecordAsync(123, 456, req);
 
             await client.Received().PatchAsync("/safedns/v1/templates/123/records/456", req);
@@ -144,14 +144,14 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
         [TestMethod]
         public async Task UpdateTemplateRecordAsync_InvalidTemplateID_ThrowsUKFastClientValidationException()
         {
-            TemplateRecordOperations ops = new TemplateRecordOperations(null);
+            var ops = new TemplateRecordOperations<Record>(null);
             await Assert.ThrowsExceptionAsync<UKFastClientValidationException>(() => ops.UpdateRecordAsync(0, 456, null));
         }
 
         [TestMethod]
         public async Task UpdateTemplateRecordAsync_InvalidRecordID_ThrowsUKFastClientValidationException()
         {
-            TemplateRecordOperations ops = new TemplateRecordOperations(null);
+            var ops = new TemplateRecordOperations<Record>(null);
             await Assert.ThrowsExceptionAsync<UKFastClientValidationException>(() => ops.UpdateRecordAsync(123, 0, null));
         }
 
@@ -161,7 +161,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
             IUKFastSafeDNSClient client = Substitute.For<IUKFastSafeDNSClient>();
             await client.DeleteAsync("/safedns/v1/templates/123/records/456");
 
-            TemplateRecordOperations ops = new TemplateRecordOperations(client);
+            var ops = new TemplateRecordOperations<Record>(client);
             await ops.DeleteRecordAsync(123, 456);
 
             await client.Received().DeleteAsync("/safedns/v1/templates/123/records/456");
@@ -170,14 +170,14 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
         [TestMethod]
         public async Task DeleteTemplateRecordAsync_InvalidTemplateID_ThrowsUKFastClientValidationException()
         {
-            TemplateRecordOperations ops = new TemplateRecordOperations(null);
+            var ops = new TemplateRecordOperations<Record>(null);
             await Assert.ThrowsExceptionAsync<UKFastClientValidationException>(() => ops.DeleteRecordAsync(0, 456));
         }
 
         [TestMethod]
         public async Task DeleteTemplateRecordAsync_InvalidRecordID_ThrowsUKFastClientValidationException()
         {
-            TemplateRecordOperations ops = new TemplateRecordOperations(null);
+            var ops = new TemplateRecordOperations<Record>(null);
             await Assert.ThrowsExceptionAsync<UKFastClientValidationException>(() => ops.DeleteRecordAsync(123, 0));
         }
     }
