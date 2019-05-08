@@ -110,7 +110,6 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
             };
 
             IUKFastSafeDNSClient client = Substitute.For<IUKFastSafeDNSClient>();
-            await client.PatchAsync("/safedns/v1/zones/example.com", req);
 
             var ops = new ZoneOperations<Zone>(client);
             await ops.UpdateZoneAsync("example.com", req);
@@ -129,7 +128,6 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
         public async Task DeleteZoneAsync_ValidParameters_ExpectedClientCall()
         {
             IUKFastSafeDNSClient client = Substitute.For<IUKFastSafeDNSClient>();
-            await client.DeleteAsync("/safedns/v1/zones/example.com");
 
             var ops = new ZoneOperations<Zone>(client);
             await ops.DeleteZoneAsync("example.com");

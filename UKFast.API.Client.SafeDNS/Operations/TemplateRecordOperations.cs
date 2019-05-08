@@ -76,7 +76,7 @@ namespace UKFast.API.Client.SafeDNS.Operations
                 throw new Client.Exception.UKFastClientValidationException("Invalid record id");
             }
 
-            await this.Client.DeleteAsync<T>($"/safedns/v1/templates/{templateID}/records/{recordID}");
+            await this.Client.DeleteAsync($"/safedns/v1/templates/{templateID}/records/{recordID}");
         }
     }
 }

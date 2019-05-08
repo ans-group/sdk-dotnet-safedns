@@ -110,7 +110,6 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
             };
 
             IUKFastSafeDNSClient client = Substitute.For<IUKFastSafeDNSClient>();
-            await client.PatchAsync("/safedns/v1/templates/123", req);
 
             var ops = new TemplateOperations<Template>(client);
             await ops.UpdateTemplateAsync(123, req);
@@ -129,7 +128,6 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
         public async Task DeleteTemplateAsync_ValidParameters_ExpectedClientCall()
         {
             IUKFastSafeDNSClient client = Substitute.For<IUKFastSafeDNSClient>();
-            await client.DeleteAsync("/safedns/v1/templates/123");
 
             var ops = new TemplateOperations<Template>(client);
             await ops.DeleteTemplateAsync(123);

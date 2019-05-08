@@ -44,7 +44,7 @@ namespace UKFast.API.Client.SafeDNS.Operations
                 throw new Client.Exception.UKFastClientValidationException("Invalid template id");
             }
 
-            await this.Client.PatchAsync<T>($"/safedns/v1/templates/{templateID}", req);
+            await this.Client.PatchAsync($"/safedns/v1/templates/{templateID}", req);
         }
 
         public async Task DeleteTemplateAsync(int templateID)
