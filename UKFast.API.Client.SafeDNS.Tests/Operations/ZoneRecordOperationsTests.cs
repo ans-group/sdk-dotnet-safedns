@@ -25,7 +25,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
             };
 
             IUKFastSafeDNSClient client = Substitute.For<IUKFastSafeDNSClient>();
-            client.PostAsync<Record>("/safedns/v1/zones/example.com/records", Arg.Is<CreateRecordRequest>(x => x.Name == "test.example.com")).Returns(new Record()
+            client.PostAsync<Record>("/safedns/v1/zones/example.com/records", req).Returns(new Record()
             {
                 ID = 123
             });
@@ -133,7 +133,6 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
             };
 
             IUKFastSafeDNSClient client = Substitute.For<IUKFastSafeDNSClient>();
-            await client.PatchAsync("/safedns/v1/zones/example.com/records/123", req);
 
             var ops = new ZoneRecordOperations<Record>(client);
             await ops.UpdateRecordAsync("example.com", 123, req);
@@ -159,7 +158,6 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
         public async Task DeleteZoneRecordAsync_ValidParameters_ExpectedClientCall()
         {
             IUKFastSafeDNSClient client = Substitute.For<IUKFastSafeDNSClient>();
-            await client.DeleteAsync("/safedns/v1/zones/example.com/records/123");
 
             var ops = new ZoneRecordOperations<Record>(client);
             await ops.DeleteRecordAsync("example.com", 123);
