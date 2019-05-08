@@ -12,7 +12,7 @@ using UKFast.API.Client.SafeDNS.Operations;
 namespace UKFast.API.Client.SafeDNS.Tests.Operations
 {
     [TestClass]
-    public class TemplateOperationsBaseTests
+    public class TemplateOperationsTests
     {
         [TestMethod]
         public async Task CreateTemplateAsync_ExpectedResult()
@@ -28,7 +28,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
                 ID = 123
             });
 
-            TemplateOperations ops = new TemplateOperations(client);
+            var ops = new TemplateOperations<Template>(client);
             int id = await ops.CreateTemplateAsync(req);
 
             Assert.AreEqual(123, id);
@@ -38,7 +38,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
         public async Task GetTemplatesAsync_ExpectedResult()
         {
             IUKFastSafeDNSClient client = Substitute.For<IUKFastSafeDNSClient>();
-            TemplateOperations ops = new TemplateOperations(client);
+            var ops = new TemplateOperations<Template>(client);
 
             client.GetAllAsync(Arg.Any<UKFastClient.GetPaginatedAsyncFunc<Template>>(), null).Returns(Task.Run<IList<Template>>(() =>
              {
@@ -73,7 +73,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
                 });
             }));
 
-            TemplateOperations ops = new TemplateOperations(client);
+            var ops = new TemplateOperations<Template>(client);
             var paginated = await ops.GetTemplatesPaginatedAsync();
 
             Assert.AreEqual(2, paginated.Items.Count);
@@ -88,7 +88,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
                 ID = 123
             });
 
-            TemplateOperations ops = new TemplateOperations(client);
+            var ops = new TemplateOperations<Template>(client);
             var template = await ops.GetTemplateAsync(123);
 
             Assert.AreEqual(123, template.ID);
@@ -97,7 +97,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
         [TestMethod]
         public async Task GetTemplateAsync_InvalidTemplateID_ThrowsUKFastClientValidationException()
         {
-            TemplateOperations ops = new TemplateOperations(null);
+            var ops = new TemplateOperations<Template>(null);
             await Assert.ThrowsExceptionAsync<UKFastClientValidationException>(() => ops.GetTemplateAsync(0));
         }
 
@@ -112,7 +112,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
             IUKFastSafeDNSClient client = Substitute.For<IUKFastSafeDNSClient>();
             await client.PatchAsync("/safedns/v1/templates/123", req);
 
-            TemplateOperations ops = new TemplateOperations(client);
+            var ops = new TemplateOperations<Template>(client);
             await ops.UpdateTemplateAsync(123, req);
 
             await client.Received().PatchAsync("/safedns/v1/templates/123", req);
@@ -121,7 +121,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
         [TestMethod]
         public async Task UpdateTemplateAsync_InvalidTemplateID_ThrowsUKFastClientValidationException()
         {
-            TemplateOperations ops = new TemplateOperations(null);
+            var ops = new TemplateOperations<Template>(null);
             await Assert.ThrowsExceptionAsync<UKFastClientValidationException>(() => ops.UpdateTemplateAsync(0, null));
         }
 
@@ -131,7 +131,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
             IUKFastSafeDNSClient client = Substitute.For<IUKFastSafeDNSClient>();
             await client.DeleteAsync("/safedns/v1/templates/123");
 
-            TemplateOperations ops = new TemplateOperations(client);
+            var ops = new TemplateOperations<Template>(client);
             await ops.DeleteTemplateAsync(123);
 
             await client.Received().DeleteAsync("/safedns/v1/templates/123");
@@ -140,7 +140,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
         [TestMethod]
         public async Task DeleteTemplateAsync_InvalidTemplateID_ThrowsUKFastClientValidationException()
         {
-            TemplateOperations ops = new TemplateOperations(null);
+            var ops = new TemplateOperations<Template>(null);
             await Assert.ThrowsExceptionAsync<UKFastClientValidationException>(() => ops.DeleteTemplateAsync(0));
         }
     }

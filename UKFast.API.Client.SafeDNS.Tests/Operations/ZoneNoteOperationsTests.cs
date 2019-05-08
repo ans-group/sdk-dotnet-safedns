@@ -13,7 +13,7 @@ using UKFast.API.Client.SafeDNS.Operations;
 namespace UKFast.API.Client.SafeDNS.Tests.Operations
 {
     [TestClass]
-    public class ZoneNoteOperationsBaseTests
+    public class ZoneNoteOperationsTests
     {
         [TestMethod]
         public async Task CreateZoneNoteAsync_ExpectedResult()
@@ -29,7 +29,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
                 ID = 123
             });
 
-            ZoneNoteOperations ops = new ZoneNoteOperations(client);
+            var ops = new ZoneNoteOperations<Note>(client);
             int id = await ops.CreateNoteAsync("example.com", req);
 
             Assert.AreEqual(123, id);
@@ -38,7 +38,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
         [TestMethod]
         public async Task CreateZoneNoteAsync_InvalidTemplateID_ThrowsUKFastClientValidationException()
         {
-            ZoneNoteOperations ops = new ZoneNoteOperations(null);
+            var ops = new ZoneNoteOperations<Note>(null);
             await Assert.ThrowsExceptionAsync<UKFastClientValidationException>(() => ops.CreateNoteAsync("", null));
         }
 
@@ -48,7 +48,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
         public async Task GetZoneNotesAsync_ExpectedResult()
         {
             IUKFastSafeDNSClient client = Substitute.For<IUKFastSafeDNSClient>();
-            ZoneNoteOperations ops = new ZoneNoteOperations(client);
+            var ops = new ZoneNoteOperations<Note>(client);
 
             client.GetAllAsync(Arg.Any<UKFastClient.GetPaginatedAsyncFunc<Note>>(), null).Returns(Task.Run<IList<Note>>(() =>
             {
@@ -83,7 +83,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
                 });
             }));
 
-            ZoneNoteOperations ops = new ZoneNoteOperations(client);
+            var ops = new ZoneNoteOperations<Note>(client);
             var paginated = await ops.GetNotesPaginatedAsync("example.com");
 
             Assert.AreEqual(2, paginated.Items.Count);
@@ -92,7 +92,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
         [TestMethod]
         public async Task GetZoneNotesPaginatedAsync_InvalidTemplateID_ThrowsUKFastClientValidationException()
         {
-            ZoneNoteOperations ops = new ZoneNoteOperations(null);
+            var ops = new ZoneNoteOperations<Note>(null);
             await Assert.ThrowsExceptionAsync<UKFastClientValidationException>(() => ops.GetNotesPaginatedAsync(""));
         }
 
@@ -105,7 +105,7 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
                 ID = 123
             });
 
-            ZoneNoteOperations ops = new ZoneNoteOperations(client);
+            var ops = new ZoneNoteOperations<Note>(client);
             var note = await ops.GetNoteAsync("example.com", 123);
 
             Assert.AreEqual(123, note.ID);
@@ -114,14 +114,14 @@ namespace UKFast.API.Client.SafeDNS.Tests.Operations
         [TestMethod]
         public async Task GetZoneNoteAsync_InvalidZoneName_ThrowsUKFastClientValidationException()
         {
-            ZoneNoteOperations ops = new ZoneNoteOperations(null);
+            var ops = new ZoneNoteOperations<Note>(null);
             await Assert.ThrowsExceptionAsync<UKFastClientValidationException>(() => ops.GetNoteAsync("", 123));
         }
 
         [TestMethod]
         public async Task GetZoneNoteAsync_InvalidNoteID_ThrowsUKFastClientValidationException()
         {
-            ZoneNoteOperations ops = new ZoneNoteOperations(null);
+            var ops = new ZoneNoteOperations<Note>(null);
             await Assert.ThrowsExceptionAsync<UKFastClientValidationException>(() => ops.GetNoteAsync("example.com", 0));
         }
     }
