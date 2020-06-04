@@ -12,5 +12,6 @@ namespace UKFast.API.Client.SafeDNS
         IZoneNoteOperations<Note> ZoneNoteOperations();
         ITemplateOperations<Template> TemplateOperations();
         ITemplateRecordOperations<Record> TemplateRecordOperations();
+        ISettingsOperations<Settings> SettingsOperations();
     }
 }

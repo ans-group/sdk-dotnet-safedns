@@ -39,5 +39,10 @@ namespace UKFast.API.Client.SafeDNS
         {
             return new TemplateRecordOperations<Record>(this);
         }
+
+        public ISettingsOperations<Settings> SettingsOperations()
+        {
+            return new SettingsOperations<Settings>(this);
+        }
     }
 }

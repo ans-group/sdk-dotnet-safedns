@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -8,10 +8,11 @@
     <Copyright></Copyright>
     <PackageProjectUrl>https://github.com/ukfast/sdk-dotnet-safedns</PackageProjectUrl>
     <PackageTags>sdk, client, ukfast, safedns</PackageTags>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="UKFast.API.Client.Core" Version="1.0.1" />
+    <PackageReference Include="UKFast.API.Client.Core" Version="1.0.4" />
   </ItemGroup>
 
 </Project>
