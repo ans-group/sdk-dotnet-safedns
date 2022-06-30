@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>ANS</Authors>
+    <Description>Client for interacting with ANS SafeDNS</Description>
+    <Copyright></Copyright>
+    <PackageProjectUrl>https://github.com/ans-group/sdk-dotnet-safedns</PackageProjectUrl>
+	  <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageTags>sdk, client, ans, safedns</PackageTags>
+    <Version>1.0.1</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ANS.API.Client.Core" Version="1.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../LICENSE" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+</Project>

@@ -1,15 +1,15 @@
 # sdk-dotnet-safedns
 
-This is the official .NET SDK for UKFast SafeDNS
+This is the official .NET SDK for ANS SafeDNS
 
 You should refer to the [Getting Started](https://developers.ukfast.io/getting-started) section of the API documentation before proceeding below
 
 ## Basic usage
 
-To get started, we'll first instantiate an instance of `IUKFastSafeDNSClient`:
+To get started, we'll first instantiate an instance of `IANSSafeDNSClient`:
 
 ```csharp
-IUKFastSafeDNSClient client = new UKFastSafeDNSClient(new ClientConnection("myapikey"));
+IANSSafeDNSClient client = new ANSSafeDNSClient(new ClientConnection("myapikey"));
 ```
 
 Next, we'll obtain an instance of IZoneOperations to perform operations on DNS zones:
@@ -26,7 +26,7 @@ IList<Zone> zones = await zoneOps.GetZonesAsync();
 
 ## Operations
 
-Several operations are available via `IUKFastSafeDNSClient`:
+Several operations are available via `IANSSafeDNSClient`:
 
 - `ZoneOperations()` - returns an instance of `IZoneOperations` for performing zone operations
 - `ZoneRecordOperations()` - returns an instance of `IZoneRecordOperations` for performing zone record operations
